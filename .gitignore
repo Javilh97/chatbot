@@ -4,7 +4,7 @@
 /out-tsc
 /bazel-out
 /.wwebjs_cache
-
+/.wwebjs_auth
 # Node
 /node_modules
 npm-debug.log
