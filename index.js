@@ -1,5 +1,5 @@
 const qrcode = require('qrcode-terminal');
-const { Client, LocalAuth } = require('whatsapp-web.js');
+const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const client = new Client({
     //guarda la sesion localmente para no escanear el codigo qr cada que se inicie el cliente
     authStrategy: new LocalAuth(),
@@ -32,19 +32,24 @@ client.on('ready', () => {
 client.on('message', message => {
     console.log(message.body);
 
-    if(message.body.toLocaleLowerCase() == 'hola'){
+    if(message.body.toLocaleLowerCase() === 'hola'){
         //con reply se hace mencion al mensaje, reply es un metodo interno de sendmsg
         //msg.reply('Hola, Soy un robot');
         //crear un boton y enviarlo
         // let button = new Buttons('Button body', [{ body: 'Aceptar' }, { body: 'rechazar' }], 'title', 'footer');
         // client.sendMessage(message.from, button);
-
+        // const numero = message.from;
         client.sendMessage(message.from ,'Hola!, soy un bot :D');
         client.sendMessage(message.from, '¿Cual es tu nombre?');
-    } else if(message.body) {
+        // client.sendMessage(message.from, `Tu numero es: ${numero}`)
+    } 
+
+    else if(message.body.toLocaleLowerCase() !== 'hola' && !message.hasMedia) {
         const nombreUser = message.body;
         client.sendMessage(message.from, `Hola ${nombreUser}, ¿Como puedo ayudarte?`);
-    } else if(message.body.toLocaleLowerCase() === 'productos') {
+    }
+
+    else if(message.body.toLocaleLowerCase() === 'productos') {
         client.sendMessage(message.from, 'Coca cola ➡️ $20.00')
     } else {
         message.reply('No entiendo tu pregunta, vuelve a formular la pregunta.')
